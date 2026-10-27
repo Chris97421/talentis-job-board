@@ -1,205 +1,205 @@
-# Job Board : Talentis
+# Job Board: Talentis
 
-Projet Epitech T-WEB-501 : un site d'offres d'emploi (marque « Talentis »).
+Epitech T-WEB-501 project: a job listing website (branded "Talentis").
 
-- **Back-end** : Django 5.2 + Django REST Framework + MySQL 8, le tout dans Docker.
-- **Front-end** : HTML, CSS et JavaScript (sans framework), servi par nginx.
-- Le navigateur charge une page HTML. Le JavaScript de la page appelle l'API
-  (`fetch`) avec un token, puis affiche la réponse JSON sans recharger la page.
+- **Back-end**: Django 5.2 + Django REST Framework + MySQL 8, all running in Docker.
+- **Front-end**: HTML, CSS and JavaScript (no framework), served by nginx.
+- The browser loads an HTML page. The page's JavaScript calls the API
+  (`fetch`) with a token, then displays the JSON response without reloading the page.
 
-## Lancer le projet avec Docker
+## Run the project with Docker
 
-Prérequis : Docker et Docker Compose installés.
+Prerequisites: Docker and Docker Compose installed.
 
-1. Copier le modèle de réglages : `cp .env.example .env`
-2. Ouvrir `.env` et remplacer les `change-me` par ses propres valeurs
+1. Copy the settings template: `cp .env.example .env`
+2. Open `.env` and replace the `change-me` values with your own
    (`DB_NAME`, `DB_USER`, `DB_PASSWORD`, `SECRET_KEY`, `MYSQL_ROOT_PASSWORD`).
-   Le fichier `.env` n'est jamais envoyé sur GitHub.
-3. Lancer : `docker compose up -d --build`
-   (les tables sont créées automatiquement au démarrage du back-end)
-4. Remplir la base (une seule fois) : `docker compose exec backend python manage.py seed`
-   Cette commande crée les 16 catégories, des entreprises, des offres et des comptes de démo.
-   Elle peut être relancée sans créer de doublons.
-   Pour remettre les données de démonstration à neuf (statuts, candidatures, noms d'origine) :
+   The `.env` file is never pushed to GitHub.
+3. Start the project: `docker compose up -d --build`
+   (the tables are created automatically when the back-end starts)
+4. Fill the database (only once): `docker compose exec backend python manage.py seed`
+   This command creates the 16 categories, companies, job ads and demo accounts.
+   It can be re-run without creating duplicates.
+   To reset the demo data (statuses, applications, original names):
    `docker compose exec backend python manage.py seed_demo --reset`.
-   Cette commande ne supprime que les données de démonstration, pas les autres comptes.
+   This command only deletes the demo data, not other accounts.
 
-Adresses :
-- API : http://localhost:8000/api/
-- Front : http://localhost:5500/main.html
+Addresses:
+- API: http://localhost:8000/api/
+- Front-end: http://localhost:5500/main.html
 
-Arrêter : `docker compose stop` (les données restent).
-Repartir d'une base vide : `docker compose down -v` (après un `down -v`, refaire l'étape 4).
+Stop: `docker compose stop` (data is kept).
+Start again from an empty database: `docker compose down -v` (after a `down -v`, redo step 4).
 
-Si le back-end s'arrête avec `Access denied for user`, la base a été créée avec d'anciens
-identifiants (par exemple un `.env` vide) : faire `docker compose down -v` puis relancer.
+If the back-end stops with `Access denied for user`, the database was created with old
+credentials (for example an empty `.env`): run `docker compose down -v` and start again.
 
-## Comptes de démo
+## Demo accounts
 
-Mot de passe de tous les comptes : `motdepasse123`
+Password for all accounts: `motdepasse123`
 
-| Rôle | E-mail |
+| Role | Email |
 |---|---|
-| Candidat | `lea.martin@example.com` |
-| Recruteur | `recruiter.decathlon@example.com` |
-| Administrateur | `admin@example.com` |
+| Candidate | `lea.martin@example.com` |
+| Recruiter | `recruiter.decathlon@example.com` |
+| Administrator | `admin@example.com` |
 
-Les mots de passe sont stockés hachés. Ces comptes ne servent qu'à la démonstration.
-Une connexion réussie envoie un administrateur vers `espace-admin.html`,
-un recruteur vers son espace recruteur et un candidat vers la page des offres.
+Passwords are stored hashed. These accounts are for demonstration only.
+After a successful login, an administrator is sent to `espace-admin.html`,
+a recruiter to their recruiter area, and a candidate to the job listings page.
 
-## Schéma de la base de données
+## Database schema
 
-Base MySQL, 6 tables (les `id` sont créés automatiquement par Django).
+MySQL database, 6 tables (the `id` fields are created automatically by Django).
 
-| Table | Champs principaux | Liens |
+| Table | Main fields | Links |
 |---|---|---|
-| `User` | email (unique, sert d'identifiant), mot de passe haché, first_name, last_name, telephone, city, postal_code, role (`candidate`, `recruiter` ou `admin`), cv | `company` → Company (facultatif, pour un recruteur) |
-| `Company` | name, siret (14 caractères, unique), description, website, city, postal_code | |
+| `User` | email (unique, used as login), hashed password, first_name, last_name, telephone, city, postal_code, role (`candidate`, `recruiter` or `admin`), cv | `company` → Company (optional, for a recruiter) |
+| `Company` | name, siret (14 characters, unique), description, website, city, postal_code | |
 | `Category` | name (unique), slug (unique) | |
-| `Ad` (offre) | title, short_description, full_description, city, contract_type, monthly_salary_min / max, working_time, education_level, experience, work_mode, start_time, status (`open` ou `closed`) | `company` → Company, `recruiter` → User, `category` → Category |
-| `Application` (candidature) | first_name, last_name, email, telephone, cv, message, status (`sent`, `seen`, `interview`, `rejected`, `accepted`) | `candidate` → User, `ad` → Ad |
-| `Message` | object, content, sent_at, status (`unread` ou `read`) | `candidate` → User, `ad` → Ad |
+| `Ad` (job ad) | title, short_description, full_description, city, contract_type, monthly_salary_min / max, working_time, education_level, experience, work_mode, start_time, status (`open` or `closed`) | `company` → Company, `recruiter` → User, `category` → Category |
+| `Application` | first_name, last_name, email, telephone, cv, message, status (`sent`, `seen`, `interview`, `rejected`, `accepted`) | `candidate` → User, `ad` → Ad |
+| `Message` | object, content, sent_at, status (`unread` or `read`) | `candidate` → User, `ad` → Ad |
 
-Relations importantes :
-- Un candidat ne peut postuler **qu'une fois** par offre (contrainte `unique_candidate_ad`).
-- Supprimer un utilisateur supprime ses candidatures, ses messages et ses offres (`CASCADE`).
-- On ne peut pas supprimer une entreprise ou une catégorie tant que des offres y sont rattachées (`PROTECT`).
-- Si une entreprise est supprimée, les recruteurs rattachés gardent leur compte (`SET_NULL`).
+Key relations:
+- A candidate can apply **only once** per job ad (`unique_candidate_ad` constraint).
+- Deleting a user deletes their applications, messages and job ads (`CASCADE`).
+- A company or a category cannot be deleted while job ads are linked to it (`PROTECT`).
+- If a company is deleted, the recruiters attached to it keep their account (`SET_NULL`).
 
-## Routes de l'API
+## API routes
 
-Toutes les routes commencent par `/api/`.
-Les routes marquées « connecté » demandent l'en-tête `Authorization: Bearer LE_TOKEN`.
-Les erreurs de validation sont renvoyées en français, champ par champ (code 400).
+All routes start with `/api/`.
+Routes marked "logged in" require the header `Authorization: Bearer YOUR_TOKEN`.
+Validation error messages are returned in French, field by field (400 status code).
 
-### Comptes
-| Méthode | Route | Qui | Rôle |
+### Accounts
+| Method | Route | Who | Purpose |
 |---|---|---|---|
-| POST | `auth/register` | tout le monde | Créer un compte candidat ou recruteur |
-| POST | `auth/login` | tout le monde | Se connecter, renvoie un token |
-| GET | `auth/me` | connecté | Profil complet (CV, et entreprise pour un recruteur) |
-| PATCH | `auth/me` | connecté | Modifier son profil, son CV (PDF, 5 Mo max) et son entreprise |
-| DELETE | `auth/me` | connecté | Supprimer son compte (ses candidatures, messages et offres sont supprimés avec) |
-| POST | `auth/logout` | connecté | Se déconnecter |
-| POST | `auth/password` | connecté | Changer son mot de passe (`old_password`, `new_password`) |
-| POST | `auth/forgot-password` | tout le monde | Demander un lien de réinitialisation par e-mail |
-| POST | `auth/reset-password` | tout le monde | Choisir un nouveau mot de passe avec le lien reçu (`token`, `password`) |
+| POST | `auth/register` | everyone | Create a candidate or recruiter account |
+| POST | `auth/login` | everyone | Log in, returns a token |
+| GET | `auth/me` | logged in | Full profile (CV, and company for a recruiter) |
+| PATCH | `auth/me` | logged in | Update profile, CV (PDF, 5 MB max) and company |
+| DELETE | `auth/me` | logged in | Delete your account (your applications, messages and job ads are deleted with it) |
+| POST | `auth/logout` | logged in | Log out |
+| POST | `auth/password` | logged in | Change password (`old_password`, `new_password`) |
+| POST | `auth/forgot-password` | everyone | Request a password reset link by email |
+| POST | `auth/reset-password` | everyone | Choose a new password with the received link (`token`, `password`) |
 
-Règle des mots de passe : 12 caractères minimum, avec au moins une lettre et un chiffre.
+Password rule: at least 12 characters, with at least one letter and one digit.
 
-Réinitialisation : en développement, l'e-mail n'est pas envoyé pour de vrai, il s'affiche dans les journaux :
-`docker compose logs backend`. Le lien est utilisable une seule fois.
+Password reset: in development, the email is not actually sent, it is printed in the logs:
+`docker compose logs backend`. The link can only be used once.
 
-### Offres
-| Méthode | Route | Qui | Rôle |
+### Job ads
+| Method | Route | Who | Purpose |
 |---|---|---|---|
-| GET | `categories` | tout le monde | Liste des catégories (id, name, slug) |
-| GET | `ads` | tout le monde | Liste des offres ouvertes. Filtres : `search`, `city`, `contract_type`, `working_time`, `education_level`, `experience`, `work_mode`, `category` (ex. `ads?search=python&city=Paris`) |
-| GET | `ads?mine=true` | recruteur | Toutes mes offres, ouvertes et fermées |
-| GET | `ads/<id>` | tout le monde | Détail d'une offre ouverte |
-| POST | `ads` | recruteur | Créer une offre (`category` = l'id de la catégorie) |
-| PUT / PATCH | `ads/<id>` | recruteur propriétaire | Modifier une offre |
-| DELETE | `ads/<id>` | recruteur propriétaire | Fermer une offre (elle n'est pas effacée) |
+| GET | `categories` | everyone | List of categories (id, name, slug) |
+| GET | `ads` | everyone | List of open job ads. Filters: `search`, `city`, `contract_type`, `working_time`, `education_level`, `experience`, `work_mode`, `category` (e.g. `ads?search=python&city=Paris`) |
+| GET | `ads?mine=true` | recruiter | All my job ads, open and closed |
+| GET | `ads/<id>` | everyone | Details of an open job ad |
+| POST | `ads` | recruiter | Create a job ad (`category` = the category id) |
+| PUT / PATCH | `ads/<id>` | owner recruiter | Update a job ad |
+| DELETE | `ads/<id>` | owner recruiter | Close a job ad (it is not erased) |
 
-### Candidatures et messages
-| Méthode | Route | Qui | Rôle |
+### Applications and messages
+| Method | Route | Who | Purpose |
 |---|---|---|---|
-| POST | `ads/<id>/apply` | candidat | Postuler à une offre (une seule fois par offre, CV en PDF facultatif) |
-| GET | `candidate/applications` | candidat | Mes candidatures |
-| PATCH | `candidate/applications/<id>` | candidat propriétaire | Modifier sa candidature (impossible si acceptée ou refusée) |
-| DELETE | `candidate/applications/<id>` | candidat propriétaire | Retirer sa candidature (impossible si acceptée ou refusée) |
-| GET | `recruiter/applications` | recruteur | Candidatures reçues sur mes offres |
-| PATCH | `applications/<id>/status` | recruteur | Changer le statut (sent, seen, interview, rejected, accepted) |
-| GET | `applications/<id>/cv` | candidat ou recruteur concerné | Télécharger le CV |
-| POST | `ads/<id>/messages` | candidat | Écrire au recruteur |
-| GET | `ads/<id>/messages` | connecté | Messages d'une offre (le recruteur voit tous les messages de son offre, le candidat voit les siens) |
-| PATCH | `messages/<id>/read` | recruteur | Marquer un message comme lu |
+| POST | `ads/<id>/apply` | candidate | Apply to a job ad (only once per ad, optional PDF CV) |
+| GET | `candidate/applications` | candidate | My applications |
+| PATCH | `candidate/applications/<id>` | owner candidate | Edit your application (not possible if accepted or rejected) |
+| DELETE | `candidate/applications/<id>` | owner candidate | Withdraw your application (not possible if accepted or rejected) |
+| GET | `recruiter/applications` | recruiter | Applications received on my job ads |
+| PATCH | `applications/<id>/status` | recruiter | Change the status (sent, seen, interview, rejected, accepted) |
+| GET | `applications/<id>/cv` | candidate or recruiter concerned | Download the CV |
+| POST | `ads/<id>/messages` | candidate | Write to the recruiter |
+| GET | `ads/<id>/messages` | logged in | Messages of a job ad (the recruiter sees all messages of their ad, the candidate sees their own) |
+| PATCH | `messages/<id>/read` | recruiter | Mark a message as read |
 
 ### Administration
-Les routes `admin/companies`, `admin/categories`, `admin/ads`, `admin/applications`,
-`admin/messages` et `admin/users` sont réservées aux comptes administrateurs.
-Chacune fait le CRUD complet :
+The routes `admin/companies`, `admin/categories`, `admin/ads`, `admin/applications`,
+`admin/messages` and `admin/users` are reserved for administrator accounts.
+Each one provides full CRUD:
 
-| Méthode | Route | Rôle |
+| Method | Route | Purpose |
 |---|---|---|
-| GET | `admin/<table>` | Lister (paginé) |
-| POST | `admin/<table>` | Créer |
-| GET | `admin/<table>/<id>` | Détail |
-| PATCH / PUT | `admin/<table>/<id>` | Modifier |
-| DELETE | `admin/<table>/<id>` | Supprimer |
+| GET | `admin/<table>` | List (paginated) |
+| POST | `admin/<table>` | Create |
+| GET | `admin/<table>/<id>` | Details |
+| PATCH / PUT | `admin/<table>/<id>` | Update |
+| DELETE | `admin/<table>/<id>` | Delete |
 
-Les autres comptes reçoivent 403, les visiteurs non connectés 401.
+Other accounts receive 403, visitors who are not logged in receive 401.
 
-Pagination : 10 éléments par page par défaut. `?page=2` choisit la page,
-`?page_size=50` change la taille (100 maximum). La réponse contient
-`count`, `next`, `previous` et `results`.
-Pour les utilisateurs, `?search=` cherche dans l'e-mail, le prénom et le nom,
-et `?role=candidate|recruiter|admin` filtre par rôle.
+Pagination: 10 items per page by default. `?page=2` selects the page,
+`?page_size=50` changes the size (100 maximum). The response contains
+`count`, `next`, `previous` and `results`.
+For users, `?search=` searches the email, first name and last name,
+and `?role=candidate|recruiter|admin` filters by role.
 
-## Pages du front
+## Front-end pages
 
-Toutes les pages sont dans `front-end/` et utilisent `js/api.js`
-(appels à l'API avec le token, déconnexion automatique si le token est refusé).
+All pages are in `front-end/` and use `js/api.js`
+(API calls with the token, automatic logout if the token is rejected).
 
-| Page | Rôle |
+| Page | Purpose |
 |---|---|
-| `main.html` | Liste des offres, filtres, « En savoir plus » (détail affiché sans rechargement) et formulaire « Postuler » |
-| `login.html` | Connexion, et demande de lien « mot de passe oublié » |
-| `account.html` | Création de compte (candidat ou recruteur) |
-| `profile.html` | Modifier son profil, son CV, son mot de passe |
-| `reset-password.html` | Choisir un nouveau mot de passe avec le lien reçu |
-| `espace-candidate.html` | Espace candidat : mes candidatures et mes messages |
-| `espace-recruiter.html` | Espace recruteur : mes offres, candidatures reçues et messages |
-| `espace-admin.html` | Espace administrateur : une seule page avec 6 sections (menu à gauche) : tableau de bord, utilisateurs, entreprises, offres, candidatures, messages |
+| `main.html` | Job ad list, filters, "Learn more" (details shown without reloading) and "Apply" form |
+| `login.html` | Login, and "forgot password" link request |
+| `account.html` | Account creation (candidate or recruiter) |
+| `profile.html` | Edit your profile, CV and password |
+| `reset-password.html` | Choose a new password with the received link |
+| `espace-candidate.html` | Candidate area: my applications and my messages |
+| `espace-recruiter.html` | Recruiter area: my job ads, received applications and messages |
+| `espace-admin.html` | Administrator area: a single page with 6 sections (menu on the left): dashboard, users, companies, job ads, applications, messages |
 
-`espace-admin.html` ne s'affiche que pour un compte administrateur.
-Les autres sont renvoyés vers la page de connexion. Le détail de l'administration est dans la section suivante.
+`espace-admin.html` is only displayed for an administrator account.
+Other users are redirected to the login page. The administration details are in the next section.
 
-## Interface d'administration
+## Administration interface
 
-`espace-admin.html` appelle les routes `admin/...` de l'API. Chaque section a son fichier JavaScript
-(`js/admin-*.js`) et le fichier `js/admin-common.js` contient les éléments partagés
-(fenêtres de formulaire, messages de confirmation ou d'erreur, chargement des listes).
+`espace-admin.html` calls the `admin/...` API routes. Each section has its own JavaScript file
+(`js/admin-*.js`) and the `js/admin-common.js` file contains the shared parts
+(form windows, confirmation and error messages, list loading).
 
-| Section | Ce que l'administrateur peut faire |
+| Section | What the administrator can do |
 |---|---|
-| Tableau de bord | Voir les chiffres réels (utilisateurs, entreprises, offres ouvertes, candidatures) et les derniers enregistrements |
-| Utilisateurs | Rechercher (nom, prénom, e-mail), filtrer par rôle, pagination, **ajouter**, **modifier**, **supprimer** |
-| Entreprises | Rechercher, pagination, **ajouter**, **modifier**, **supprimer** |
-| Offres | Rechercher, filtrer par statut, **ajouter** (en choisissant l'entreprise, le recruteur et la catégorie), **modifier**, fermer ou rouvrir, **supprimer** |
-| Candidatures | Filtrer par statut, changer le statut, **supprimer** |
-| Messages | Rechercher, **supprimer** |
+| Dashboard | See the real figures (users, companies, open job ads, applications) and the latest records |
+| Users | Search (last name, first name, email), filter by role, pagination, **add**, **edit**, **delete** |
+| Companies | Search, pagination, **add**, **edit**, **delete** |
+| Job ads | Search, filter by status, **add** (by choosing the company, recruiter and category), **edit**, close or reopen, **delete** |
+| Applications | Filter by status, change the status, **delete** |
+| Messages | Search, **delete** |
 
-Protections :
-- Un administrateur ne peut pas supprimer son propre compte, ni retirer son propre rôle administrateur.
-- Supprimer une entreprise qui a encore des offres est refusé par l'API (erreur 409) : un message explique pourquoi.
-- Supprimer une offre supprime aussi ses candidatures (après confirmation).
+Safeguards:
+- An administrator cannot delete their own account, nor remove their own administrator role.
+- Deleting a company that still has job ads is refused by the API (409 error): a message explains why.
+- Deleting a job ad also deletes its applications (after confirmation).
 
-## Lancer les tests
+## Run the tests
 
 ```
 docker compose exec backend python manage.py test
 ```
 
-La suite contient 60 tests (comptes, offres, candidatures, administration, droits d'accès).
+The test suite contains 60 tests (accounts, job ads, applications, administration, access rights).
 
-Au premier lancement, MySQL peut refuser la création de la base de test
-(`Access denied ... test_jobboard_db`). Il faut alors donner le droit à
-`jobboard_user` (à refaire après chaque `docker compose down -v`) :
+On first run, MySQL may refuse to create the test database
+(`Access denied ... test_jobboard_db`). You then need to grant the right to
+`jobboard_user` (to redo after each `docker compose down -v`):
 
 ```
 docker compose exec db sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "GRANT ALL PRIVILEGES ON test_jobboard_db.* TO \"jobboard_user\"@\"%\";"'
 ```
 
-## Organisation du dépôt
+## Repository layout
 
 ```
 back-end/     Django (api/models.py, api/views.py, api/admin_api.py, api/serializers.py, api/tests.py)
-front-end/    pages HTML, js/ (un fichier par page), style/ (CSS)
-docker-compose.yml   3 services : db (MySQL), backend (Django), frontend (nginx)
-.env.example  modèle des réglages (copier en .env)
+front-end/    HTML pages, js/ (one file per page), style/ (CSS)
+docker-compose.yml   3 services: db (MySQL), backend (Django), frontend (nginx)
+.env.example  settings template (copy to .env)
 ```
 
-## Équipe
-Projet réalisé en équipe de 3 à Epitech : Christophe Malet (back-end / API, Docker), [@mengqichenn](https://github.com/mengqichenn) et [@majjoutmeryam6-source](https://github.com/majjoutmeryam6-source).
+## Team
+Project built by a team of 3 at Epitech: Christophe Malet (back-end / API, Docker), [@mengqichenn](https://github.com/mengqichenn) and [@majjoutmeryam6-source](https://github.com/majjoutmeryam6-source).

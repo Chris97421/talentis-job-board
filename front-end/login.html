@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="icon" href="style/logo.png" type="image/x-icon">
+
+    <title>Connexion - Talentis</title>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <a class="jobboard" href="main.html"><img src="style/logo.png" class="header-logo" alt=""><span>Talentis</span></a>
+            
+            <nav class="navbar" id="nav-user">
+                <li><a class="btn-nav-outline" href="main.html">Offres</a></li>
+                <li data-role="visitor"><a class="btn btn-sm" href="login.html">Se connecter</a></li>
+                <li data-role="visitor"><a class="btn-nav-outline" href="account.html">S'inscrire</a></li>
+            </nav>
+
+            <nav class="navbar" id="nav-admin" hidden>
+                <li><span class="btn btn-sm btn-ghost" aria-current="page">Espace admin</span></li>
+            </nav>
+        </div>
+    </header>
+
+
+
+    <main class="auth">
+        
+        <div class="card" id="panel-user">
+            <h1>Connexion</h1>
+            <div class="alert" id="login-error" role="alert" hidden></div>
+            <form id="login-form">
+                <div class="field"><label for="email">Adresse mail</label>
+                    <input id="email" type="email" name="email" autocomplete="email" required>
+                </div>
+                <div class="field"><label for="password">Mot de passe</label>
+                    <input id="password" type="password" name="password" autocomplete="current-password" required>
+                </div>
+                <p class="notice"> <a href="reset-password.html">Mot de passe oublié ?</a></p>
+                <p class="notice">Pas encore de compte ? <a href="account.html?mode=create">Créer un compte</a></p>
+                <button class="btn" type="submit">Se connecter</button>
+                <p class="notice"><a href="#" id="login-admin">Espace administrateur</a></p>
+            </form>
+        </div>
+
+
+        <div class="card" id="panel-admin" hidden>
+            <a class="back-link" id="login-user" href="#">← Retour</a>
+            <h1>Connexion</h1>
+            <div class="alert" id="admin-error" role="alert" hidden></div>
+            <form id="admin-login-form">
+                <div class="field"><label for="admin-email">Adresse mail</label>
+                    <input id="admin-email" type="email" autocomplete="email" required>
+                </div>
+                <div class="field"><label for="admin-password">Mot de passe</label>
+                    <input id="admin-password" type="password" autocomplete="current-password" required>
+                </div>
+                <p class="notice"> <a href="reset-password.html">Mot de passe oublié ?</a></p>
+                <button class="btn" type="submit">Se connecter</button>
+            </form>
+        </div>
+
+    </main>
+    
+    <footer class="site-footer">
+        <p>© 2026 Talentis. Tous droits réservés.</p>
+    </footer>
+            
+    <script src="js/api.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>

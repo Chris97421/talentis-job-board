@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="icon" href="style/logo.png" type="image/x-icon">
+
+    <style>
+          /* Cible uniquement les champs qui ont l'attribut readonly */
+        input[readonly] {
+            background-color: #e9ecef;  /* Couleur de fond gris clair */
+            color: #6c757d;             /* Couleur du texte gris foncé */
+            cursor:auto;
+            border-color: #ced4da;     /* Adoucit la bordure */
+        }
+    </style>
+
+    <title>Modifier mon profil - Talentis</title>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <a class="jobboard" href="main.html"><img src="style/logo.png" class="header-logo" alt=""><span>Talentis</span></a>
+            <nav class="navbar">
+
+                <!--header avec différents data-role-->
+
+                <li data-role="candidate recruiter"><a class="btn-nav-outline" href="main.html">Offres</a></li>
+
+                <li data-role="visitor" hidden><a class="btn btn-sm" href="login.html">Se connecter</a></li>
+                <li data-role="visitor" hidden><a class="btn btn-sm" href="account.html">S'inscrire</a></li>
+
+
+                <!--Menu déroulant pour candidat-->
+                <li class="menu" data-role="candidate" hidden>
+                    <details>
+                        <summary class="menu-toggle" aria-label="Menu du compte">
+                            <span class="avatar menu-initials">MC</span><span class="menu-name">Mon compte</span>
+                        </summary>
+                        <div class="menu-panel">
+                            <a class="menu-profile" href="profile.html">
+                                <span class="avatar menu-initials">MC</span>
+                                <span><strong class="menu-name">Mon compte</strong><small>Voir mon compte</small></span>
+                            </a>
+                            <hr>
+                            <a href="espace-candidate.html">Mon espace</a>
+                            <hr>
+                            <button type="button" data-logout>Déconnexion</button>
+                        </div>
+                    </details>
+                </li>
+                
+                <!--Menu déroulant pour recruteur-->
+
+                <li class="menu" data-role="recruiter" hidden>
+                    <details>
+                        <summary class="menu-toggle" aria-label="Menu du compte">
+                            <span class="avatar menu-initials">MC</span><span class="menu-name">Mon compte</span>
+                        </summary>
+
+                        <div class="menu-panel">
+                            <a class="menu-profile" href="account.html">
+                                <span class="avatar menu-initials">MC</span>
+                                <span><strong class="menu-name">Mon compte</strong><small>Voir mon compte</small></span>
+                            </a>
+                            <hr>
+                            <a href="espace-recruiter.html">Mon espace</a>
+                            <hr>
+                            <button type="button" data-logout>Déconnexion</button>
+                        </div>
+                    </details>
+                </li>
+
+                <!--Menu déroulant pour admin-->
+
+                <li class="menu" data-role="admin" hidden>
+                    <details>
+                        <summary class="menu-toggle" aria-label="Menu du compte">
+                            <span class="avatar menu-initials"></span>
+                            <span class="menu-name">Mon compte</span>
+                        </summary>
+
+                        <div class="menu-panel">
+                            <a class="menu-profile" href="profile.html">
+                                <span class="avatar menu-initials"></span>
+                                <span>
+                                    <strong class="menu-name">Mon compte</strong>
+                                    <small>Voir mon compte</small>
+                                </span>
+                            </a>
+                            <hr>
+                            <a href="espace-admin.html">Mon espace</a>
+                            <hr>
+                            <button type="button" data-logout>Déconnexion</button>
+                        </div>
+                    </details>
+                </li>
+            </nav>
+        </div>
+    </header>
+
+
+
+
+    <main class="accountcontainer edit-page">
+        <a class="back-link" id="back-link" href="main.html">← Retour</a>
+        <h1>Modifier mon profil</h1>
+
+
+        <!-- Informations personnelles : mêmes champs que account.html -->
+        <form class="accountform" id="form-info" novalidate>
+            <h2>Informations personnelles</h2>
+            <div class="form-row">
+                <div class="field"><label for="email">Adresse mail*</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required readonly>
+                    <p class="error" id="err-email"></p></div>
+                <div class="form-row two">
+                    <div class="field"><label for="first_name">Prénom*</label>
+                        <input id="first_name" name="first_name" autocomplete="given-name" required></div>
+                    <div class="field"><label for="last_name">Nom*</label>
+                        <input id="last_name" name="last_name" autocomplete="family-name" required></div>
+                </div>
+                <div class="field"><label for="telephone">Téléphone</label>
+                    <input id="telephone" name="telephone" type="tel" autocomplete="tel"></div>
+            </div>
+
+            <!-- Candidat -->
+            <fieldset id="fs-candidate" data-role="candidate" hidden style="border:0;padding:0;margin:0">
+                <div class="form-row two">
+                    <div class="field"><label for="postal_code">Code postal*</label>
+                        <input id="postal_code" name="postal_code" required></div>
+                    <div class="field"><label for="city">Ville*</label>
+                        <input id="city" name="city" required></div>
+                </div>
+                <div class="field"><label for="cv">CV (PDF, 5 Mo maximum)</label>
+                    <input id="cv" name="cv" type="file" accept="application/pdf">
+                    <p class="notice" id="cv-current"></p>
+                    <p class="error" id="err-cv" role="alert"></p></div>
+            </fieldset>
+
+            <!-- Recruteur -->
+            <fieldset id="fs-recruiter" data-role="recruiter" hidden style="border:0;padding:0;margin:0">
+                <div class="form-row two">
+                    <div class="field"><label for="company_name">Nom de l'entreprise*</label>
+                        <input id="company_name" name="company_name" required></div>
+
+                    <div class="field"><label for="siret">Numéro SIRET*</label>
+                        <input id="siret" name="siret" inputmode="numeric" pattern="[0-9]{14}" minlength="14" maxlength="14" required></div>
+                </div>
+
+                <div class="form-row two">
+                    <div class="field"><label for="company_postal_code">Code postal*</label>
+                        <input id="company_postal_code" name="company_postal_code" required></div>
+
+                    <div class="field"><label for="company_city">Ville*</label>
+                        <input id="company_city" name="company_city" required></div>
+                </div>
+
+                <div class="form-row two">
+                    <div class="field"><label for="description">Description, activité</label>
+                        <input id="description" name="description"></div>
+
+                    <div class="field"><label for="website">Site web</label>
+                        <input id="website" name="website" type="url"></div>
+                </div>
+
+            </fieldset>
+
+            <p class="error" id="err-form" role="alert"></p>
+            <div class="actions-row"><button class="btn" type="submit">Enregistrer les modifications</button></div>
+        </form>
+
+        <!-- Mot de passe : mêmes règles que account.html -->
+        <form class="accountform" id="form-pass" novalidate>
+            <h2>Mot de passe</h2>
+            <div class="field"><label for="old-pass">Mot de passe actuel</label>
+                <input id="old-pass" name="old_password" type="password" autocomplete="current-password" required>
+            </div>
+
+            <div class="field"><label for="new-pass">Nouveau mot de passe</label>
+                <input id="new-pass" name="new_password" minlength="12" type="password" autocomplete="new-password" required>
+                <p class="notice">12 caractères minimum, avec des lettres et des chiffres.</p>
+            </div>
+
+            <div class="field"><label for="new-pass2">Confirmer le nouveau mot de passe</label>
+                <input id="new-pass2" name="confirm_password" type="password" autocomplete="new-password" required>
+            </div>
+
+            <p class="error" id="err-pass" role="alert"></p>
+            <div class="actions-row"><button class="btn" type="submit">Changer le mot de passe</button></div>
+        </form>
+
+        <!-- Suppression du compte -->
+        <section class="accountform">
+            <h2>Supprimer mon compte</h2>
+            <p class="muted">Votre profil et toutes les données seront supprimés. Cette action est définitive.</p>
+            <div class="actions-row"><button class="btn btn-danger" id="btn-delete">Supprimer mon compte</button></div>
+        </section>
+    </main>
+
+    <dialog id="dlg-del" aria-labelledby="delete-title">
+        <h2 id="delete-title">Supprimer mon compte ?</h2>
+        <p>Cette action est définitive. Confirmez-vous la suppression de votre compte ?</p>
+        <p class="error" id="err-delete" role="alert"></p>
+        <div class="actions-row">
+            <button class="btn btn-ghost" id="del-cancel">Annuler</button>
+            <button class="btn btn-danger" id="del-ok">Supprimer définitivement</button>
+        </div>
+    </dialog>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+
+
+    <footer class="site-footer">
+        <p>© 2026 Talentis. Tous droits réservés.</p>
+    </footer>
+
+
+    <script src="js/api.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/profile.js" type="module"></script>
+
+</body>
+</html>

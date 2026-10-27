@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="icon" href="style/logo.png" type="image/x-icon">
+
+    <title>Mes espace - Talentis</title>
+</head>
+
+<body class="candidate-dashboard-page">
+  <header class="site-header">
+        <div class="container">
+            <a class="jobboard" href="main.html"><img src="style/logo.png" class="header-logo" alt=""><span>Talentis</span></a>
+            <nav class="navbar">
+
+                <!--header avec différents data-role-->
+
+                <li><a class="btn-nav-outline" href="main.html">Offres</a></li>
+
+                <li data-role="visitor" hidden><a class="btn btn-sm" href="login.html">Se connecter</a></li>
+                <li data-role="visitor" hidden><a class="btn-nav-outline" href="account.html">S'inscrire</a></li>
+
+
+                <!--Menu déroulant pour candidat-->
+                <li class="menu" data-role="candidate" hidden>
+                    <details>
+                        <summary class="menu-toggle" aria-label="Menu du compte">
+                            <span class="avatar menu-initials"></span><span class="menu-name">Mon compte</span>
+                        </summary>
+                        <div class="menu-panel">
+                            <a class="menu-profile" href="profile.html">
+                                <span class="avatar menu-initials"></span>
+                                <span><strong class="menu-name">Mon compte</strong><small>Voir mon compte</small></span>
+                            </a>
+                            <hr>
+                            <a href="espace-candidate.html">Mon espace</a>
+                            <hr>
+                            <button type="button" data-logout>Déconnexion</button>
+                        </div>
+                    </details>
+                </li>
+                
+                <!--Menu déroulant pour recruteur-->
+
+                <li class="menu" data-role="recruiter" hidden>
+                    <details>
+                        <summary class="menu-toggle" aria-label="Menu du compte">
+                            <span class="avatar menu-initials"></span><span class="menu-name">Mon compte</span>
+                        </summary>
+
+                        <div class="menu-panel">
+                            <a class="menu-profile" href="account.html">
+                                <span class="avatar menu-initials"></span>
+                                <span><strong class="menu-name">Mon compte</strong><small>Voir mon compte</small></span>
+                            </a>
+                            <hr>
+                            <a href="espace-recruiter.html">Mon espace</a>
+                            <hr>
+                            <button type="button" data-logout>Déconnexion</button>
+                        </div>
+                    </details>
+                </li>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container dash-page">
+        <h1>Mon espace candidat</h1>
+        <p class="muted">Ici vous pouvez suivre l'avancement des offres auxquelles vous avez postulées.</p>
+
+        <section class="card" aria-label="Résumé">
+            <div class="stats" id="stats"></div>
+        </section>
+
+        <section class="card" aria-labelledby="t-apps">
+            <div class="list-head">
+                <h2 id="t-apps">Mes candidatures</h2>
+                <div class="filter">
+                    <label for="filter" class="muted">Statut</label>
+                    <select id="filter">
+                        <option value="all">Toutes</option>
+                        <option value="sent">Envoyée</option>
+                        <option value="seen">Vue par le recruteur</option>
+                        <option value="interview">Entretien</option>
+                        <option value="accepted">Acceptée</option>
+                        <option value="rejected">Refusée</option>
+                    </select>
+                </div>
+            </div>
+            <div class="list" id="list"></div>
+        </section>
+    </main>
+
+    <!-- Modifier une candidature -->
+    <dialog id="dlg-edit">
+        <form id="form-edit">
+            <h2 id="edit-title">Modifier ma candidature</h2>
+            <div class="field">
+                <label for="e-cv-choice">CV</label>
+                <select id="e-cv-choice">
+                    <option value="keep">Garder le CV actuel</option>
+                    <option value="saved">Utiliser mon CV enregistré</option>
+                    <option value="new">Nouveau fichier</option>
+                </select>
+            </div>
+            <div class="field" id="e-cv-field" hidden>
+                <label for="e-cv">Nouveau CV (PDF)</label>
+                <input type="file" id="e-cv" accept="application/pdf">
+                <p class="notice" id="e-cv-current"></p>
+                <p class="error" id="e-cv-error" role="alert"></p>
+            </div>
+            <div class="field">
+                <label for="e-letter">Message</label>
+                <textarea id="e-letter" required></textarea>
+            </div>
+            <div class="actions-row">
+                <button type="button" class="btn btn-ghost" id="edit-cancel">Annuler</button>
+                <button type="submit" class="btn">Enregistrer</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Retirer une candidature -->
+    <dialog id="dlg-del">
+        <h2>Confirmer votre choix</h2>
+        <p class="muted" id="del-text"></p>
+        <div class="actions-row">
+            <button class="btn btn-ghost" id="del-cancel">Garder</button>
+            <button class="btn btn-danger" id="del-ok">Retirer la candidature</button>
+        </div>
+    </dialog>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+
+
+    <footer class="site-footer">
+        <p>© 2026 Talentis. Tous droits réservés.</p>
+    </footer>
+
+    
+    <script src="js/api.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/espace-candidate.js"></script>
+</body>
+</html>

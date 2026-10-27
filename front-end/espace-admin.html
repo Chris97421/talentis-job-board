@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap">
+  <link rel="icon" href="style/logo.png" type="image/png">
+  <link rel="stylesheet" href="style/style.css">
+
+  <title>Administration — Talentis</title>
+</head>
+
+<body class="admin-page">
+
+  <a class="admin-skip-link" href="#admin-main">Aller au contenu</a>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+
+      <a class="jobboard" href="#overview">
+        <img src="style/logo.png" class="header-logo" alt="">
+        <span>Talentis</span>
+      </a>
+
+      <nav class="navbar">
+        <li class="menu" data-role="admin">
+          <details>
+            <summary class="menu-toggle" aria-label="Menu du compte">
+              <span class="avatar menu-initials"></span>
+              <span class="menu-name">Mon compte</span>
+            </summary>
+
+            <div class="menu-panel">
+              <a class="menu-profile" href="profile.html">
+                <span class="avatar menu-initials"></span>
+                <span>
+                  <strong class="menu-name">Mon compte</strong>
+                  <small>Voir mon compte</small>
+                </span>
+              </a>
+
+              <hr>
+                <a href="espace-admin.html">Mon espace</a>
+              <hr>
+
+              <button type="button" data-logout>Déconnexion</button>
+            </div>
+          </details>
+        </li>
+      </nav>
+    </div>
+  </header>
+
+  <!-- NAVIGATION ADMIN -->
+  <nav class="admin-sidebar" aria-label="Navigation administrateur">
+    <a href="#overview" aria-current="location">Tableau de bord</a>
+    <a href="#users">Utilisateurs</a>
+    <a href="#companies">Entreprises</a>
+    <a href="#ads">Offres</a>
+    <a href="#applications">Candidatures</a>
+    <a href="#messages">Messages</a>
+  </nav>
+
+  <div class="admin-layout">
+
+    <main class="admin-content dash-page" id="admin-main" tabindex="-1">
+
+      <p id="admin-feedback" class="notice" role="status" aria-live="polite" hidden></p>
+
+      <!-- TABLEAU DE BORD -->
+      <section class="admin-section" id="overview" aria-labelledby="overview-title">
+
+        <div class="admin-page-heading">
+          <h2 id="overview-title">Tableau de bord - Admin</h2>
+        </div>
+
+        <div class="card">
+          <h3>Chiffres clés</h3>
+
+          <div class="stats admin-stats" id="stats">
+
+            <div class="admin-stat">
+              <strong id="stat-users" aria-label="Non chargé">—</strong>
+              <span class="muted">Utilisateurs</span>
+            </div>
+
+            <div class="admin-stat">
+              <strong id="stat-companies" aria-label="Non chargé">—</strong>
+              <span class="muted">Entreprises</span>
+            </div>
+
+            <div class="admin-stat">
+              <strong id="stat-ads" aria-label="Non chargé">—</strong>
+              <span class="muted">Offres actives</span>
+            </div>
+
+            <div class="admin-stat">
+              <strong id="stat-apps" aria-label="Non chargé">—</strong>
+              <span class="muted">Candidatures</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="overview">
+          <div class="card">
+            <div class="list-head">
+              <h3>Derniers utilisateurs</h3>
+              <a href="#users">Tout voir</a>
+            </div>
+
+            <!--Liste utilisateurs envoyée par le serveur-->
+            <div class="list" id="recent-users-list">
+              <p class="empty">Données non chargées.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="list-head">
+              <h3>Dernières offres</h3>
+              <a href="#ads">Tout voir</a>
+            </div>
+
+            <div class="list" id="recent-ads-list">
+              <p class="empty">Données non chargées.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GESTION DES UTILISATEURS -->
+      <section class="admin-section" id="users" aria-labelledby="users-title">
+
+        <div class="admin-page-heading">
+          <h2 id="users-title">Utilisateurs</h2>
+        </div>
+
+        <div class="card" data-endpoint="/admin/users">
+
+          <div class="admin-toolbar">
+
+            <div class="admin-control">
+              <label for="search">Rechercher un utilisateur</label>
+              <input id="search" type="search" placeholder="Nom, prénom ou adresse mail">
+            </div>
+
+            <div class="admin-control">
+              <label for="role-filter">Rôle</label>
+              <select id="role-filter">
+                <option value="all">Tous les rôles</option>
+                <option value="candidate">Candidat</option>
+                <option value="recruiter">Recruteur</option>
+                <option value="admin">Administrateur</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="list" id="users-list">
+            <p class="empty" id="users-empty">Données non chargées.</p>
+          </div>
+
+          <!-- PAGINATION UTILISATEURS -->
+          <div class="pagination">
+            <button type="button" id="user-previous" class="btn btn-ghost btn-sm" disabled>Précédent</button>
+
+            <span id="user-page-info">Page 1 sur 1</span>
+
+            <button type="button" id="user-next" class="btn btn-ghost btn-sm" disabled>Suivant</button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- GESTION DES ENTREPRISES -->
+      <section class="admin-section" id="companies" aria-labelledby="companies-title">
+
+        <div class="admin-page-heading">
+          <h2 id="companies-title">Entreprises</h2>
+        </div>
+
+        <div class="card" data-endpoint="/admin/companies">
+
+          <div class="admin-toolbar">
+            <div class="admin-control">
+              <label for="company-search">Rechercher une entreprise</label>
+
+              <input id="company-search" type="search" placeholder="Nom, ville ou code postal">
+            </div>
+          </div>
+
+          <div class="list" id="companies-list">
+            <p class="empty">Données non chargées.</p>
+          </div>
+
+          <!-- PAGINATION ENTREPRISES -->
+          <div class="pagination">
+            <button type="button" id="company-previous" class="btn btn-ghost btn-sm" disabled>Précédent</button>
+
+            <span id="company-page-info">Page 1 sur 1</span>
+
+            <button type="button" id="company-next" class="btn btn-ghost btn-sm" disabled>Suivant</button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- GESTION DES OFFRES -->
+      <section class="admin-section" id="ads" aria-labelledby="ads-title">
+
+        <div class="admin-page-heading">
+          <h2 id="ads-title">Offres</h2>
+        </div>
+
+        <div class="card" data-endpoint="/admin/ads">
+
+          <div class="admin-toolbar">
+
+            <div class="admin-control">
+              <label for="ads-search">Rechercher une offre</label>
+              <input id="ads-search" type="search" placeholder="Intitulé, entreprise ou ville">
+            </div>
+
+            <div class="admin-control">
+              <label for="ads-status">Statut</label>
+              <select id="ads-status">
+                <option value="all">Tous les statuts</option>
+                <option value="open">Ouverte</option>
+                <option value="closed">Fermée</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="list" id="ads-list">
+            <p class="empty">Données non chargées.</p>
+          </div>
+
+          <!-- PAGINATION OFFRES -->
+          <div class="pagination">
+            <button type="button" id="ad-previous" class="btn btn-ghost btn-sm" disabled>Précédent</button>
+
+            <span id="ad-page-info">Page 1 sur 1</span>
+
+            <button type="button" id="ad-next" class="btn btn-ghost btn-sm" disabled>Suivant</button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- GESTION DES CANDIDATURES -->
+      <section class="admin-section" id="applications" aria-labelledby="applications-title">
+
+        <div class="admin-page-heading">
+          <h2 id="applications-title">Candidatures</h2>
+        </div>
+
+        <div class="card" data-endpoint="/admin/applications">
+
+          <div class="admin-toolbar">
+            <div class="admin-control">
+              <label for="application-status">Statut</label>
+
+              <select id="application-status">
+                <option value="all">Tous les statuts</option>
+                <option value="sent">Envoyée</option>
+                <option value="seen">Vue</option>
+                <option value="interview">Entretien</option>
+                <option value="accepted">Acceptée</option>
+                <option value="rejected">Refusée</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="list" id="applications-list">
+            <p class="empty">Données non chargées.</p>
+          </div>
+
+          <!-- PAGINATION CANDIDATURES -->
+
+          <div class="pagination">
+            <button type="button" id="application-previous" class="btn btn-ghost btn-sm" disabled>Précédent</button>
+
+            <span id="application-page-info">Page 1 sur 1</span>
+
+            <button type="button" id="application-next" class="btn btn-ghost btn-sm" disabled>Suivant</button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- GESTION DES MESSAGES -->
+      <section class="admin-section" id="messages" aria-labelledby="messages-title">
+
+        <div class="admin-page-heading">
+          <h2 id="messages-title">Messages</h2>
+        </div>
+
+        <div class="card" data-endpoint="/admin/messages">
+
+          <div class="admin-toolbar">
+            <div class="admin-control">
+              <label for="messages-search">Rechercher un message</label>
+
+              <input id="messages-search" type="search" placeholder="Expéditeur, destinataire ou contenu">
+            </div>
+          </div>
+
+          <div class="list" id="messages-list">
+            <p class="empty">Données non chargées.</p>
+          </div>
+            <!-- PAGINATION messages -->
+
+          <div class="pagination">
+            <button type="button" id="message-previous" class="btn btn-ghost btn-sm" disabled>Précédent</button>
+
+            <span id="message-page-info">Page 1 sur 1</span>
+
+            <button type="button" id="message-next" class="btn btn-ghost btn-sm" disabled>Suivant</button>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+    <footer class="site-footer">
+        <p>© 2026 Talentis. Tous droits réservés.</p>
+    </footer>
+    
+
+  <!-- SCRIPTS -->
+  <script src="js/api.js" defer></script>
+  <script src="js/admin-common.js" defer></script>
+  <script src="js/menu.js"></script>
+  <script src="js/admin-dashboard.js" defer></script>
+  <script src="js/admin-users.js" defer></script>
+  <script src="js/admin-companies.js" defer></script>
+  <script src="js/admin-ads.js" defer></script>
+  <script src="js/admin-applications.js" defer></script>
+  <script src="js/admin-messages.js" defer></script>
+
+</body>
+</html>

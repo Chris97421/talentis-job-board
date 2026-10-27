@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="icon" href="style/logo.png" type="image/x-icon">
+
+    <title>Mon espace - Talentis</title>
+</head>
+
+<body>
+<!--HEADER-->
+    <header class="site-header">
+        <div class="container">
+            <a class="jobboard" href="main.html"><img src="style/logo.png" class="header-logo" alt=""><span>Talentis</span></a>
+            <nav class="navbar">
+
+                <!--header avec différents data-role-->
+
+                <li><a class="btn-nav-outline" href="main.html">Offres</a></li>
+
+                <li data-role="visitor" hidden><a class="btn btn-sm" href="login.html">Se connecter</a></li>
+                <li data-role="visitor" hidden><a class="btn-nav-outline" href="account.html">S'inscrire</a></li>
+
+
+                <!--Menu déroulant pour candidat-->
+                <li class="menu" data-role="candidate" hidden>
+                    <details>
+                        <summary class="menu-toggle" aria-label="Menu du compte">
+                            <span class="avatar menu-initials"></span><span class="menu-name">Mon compte</span>
+                        </summary>
+                        <div class="menu-panel">
+                            <a class="menu-profile" href="profile.html">
+                                <span class="avatar menu-initials"></span>
+                                <span><strong class="menu-name">Mon compte</strong><small>Voir mon compte</small></span>
+                            </a>
+                            <hr>
+                            <a href="espace-candidate.html">Mon espace</a>
+                            <hr>
+                            <button type="button" data-logout>Déconnexion</button>
+                        </div>
+                    </details>
+                </li>
+                
+                <!--Menu déroulant pour recruteur-->
+
+                <li class="menu" data-role="recruiter" hidden>
+                    <details>
+                        <summary class="menu-toggle" aria-label="Menu du compte">
+                            <span class="avatar menu-initials"></span><span class="menu-name">Mon compte</span>
+                        </summary>
+
+                        <div class="menu-panel">
+                            <a class="menu-profile" href="account.html">
+                                <span class="avatar menu-initials"></span>
+                                <span><strong class="menu-name">Mon compte</strong><small>Voir mon compte</small></span>
+                            </a>
+                            <hr>
+                            <a href="espace-recruiter.html">Mon espace</a>
+                            <hr>
+                            <button type="button" data-logout>Déconnexion</button>
+                        </div>
+                    </details>
+                </li>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container dash-page">
+        <h1>Mon espace recruteur</h1>
+        <p class="muted">Ici vous pouvez publier vos offres et consulter les candidatures reçues.</p>
+
+        <section class="card" aria-label="Résumé">
+            <div class="stats" id="stats"></div>
+        </section>
+
+        <!-- Mes offres -->
+        <section class="card" aria-labelledby="t-offers">
+            <div class="list-head">
+                <h2 id="t-offers">Mes offres</h2>
+                <button class="btn btn-sm" id="btn-new">Publier une offre</button>
+            </div>
+            <div class="list" id="offers"></div>
+        </section>
+
+        <!-- Candidatures reçues -->
+        <section class="card" id="applicants-section" aria-labelledby="t-apps">
+            <div class="list-head">
+                <h2 id="t-apps">Candidatures reçues</h2>
+                <div class="filter">
+                    <label for="f-offer" class="muted">Offre</label>
+                    <select id="f-offer"></select>
+                    <label for="f-status" class="muted">Statut</label>
+                    <select id="f-status">
+                        <option value="all">Tous</option>
+                        <option value="sent">Non vue</option>
+                        <option value="vue">Vue</option>
+                        <option value="accepte">Acceptée</option>
+                        <option value="refuse">Refusée</option>
+                    </select>
+                </div>
+            </div>
+            <div class="list" id="applicants"></div>
+        </section>
+    </main>
+
+    <!-- Publier / modifier une offre -->
+    <dialog id="publish-dialog" class="modal" aria-labelledby="publish-title">
+        <form id="publish-form" class="modal-body">
+            <div class="modal-head">
+                <h2 id="publish-title">Publier une offre</h2>
+                <button type="button" class="modal-close" data-close aria-label="Fermer">&times;</button>
+            </div>
+
+            <div class="alert" id="publish-error" role="alert" hidden></div>
+            <div class="ad-fields">
+                <div class="field wide"><label for="p-title">Titre du poste</label><input id="p-title" name="title" maxlength="150" required></div>
+                    
+                <div class="field wide"><label for="p-short">Description courte</label><input id="p-short" name="short_description" maxlength="255" required></div>
+                    
+                <div class="field wide"><label for="p-full">Description complète</label><textarea id="p-full" name="full_description" rows="6" required></textarea></div>
+
+                <div class="field"><label for="p-city">Ville</label><input id="p-city" name="city"></div>
+                    
+                <div class="field"><label for="p-postal">Code postal</label><input id="p-postal" name="postal_code" inputmode="numeric" maxlength="10"></div>
+
+                <div class="field"><label for="p-contract">Type de contrat</label>
+                    <select id="p-contract" name="contract_type" required>
+                        <option value="CDI">CDI</option><option value="CDD">CDD</option><option value="Stage">Stage</option>
+                        <option value="Alternance">Alternance</option><option value="Interim">Intérim</option>
+                    </select>
+                </div>
+
+                <div class="field"><label for="p-category">Catégorie</label><select id="p-category" name="category" required></select></div>
+
+                <div class="field"><label for="p-min">Salaire mensuel minimum (€)</label><input id="p-min" name="monthly_salary_min" type="number" min="0"></div>
+
+                <div class="field"><label for="p-max">Salaire mensuel maximum (€)</label><input id="p-max" name="monthly_salary_max" type="number" min="0"></div>
+
+                <div class="field"><label for="p-time">Temps de travail</label>
+                    <select id="p-time" name="working_time">
+                        <option value="">Non précisé</option><option value="full_time">Temps plein</option><option value="part_time">Temps partiel</option>
+                    </select>
+                </div>
+
+                <div class="field"><label for="p-mode">Mode de travail</label>
+                    <select id="p-mode" name="work_mode">
+                        <option value="onsite">Sur site</option><option value="hybrid">Hybride</option><option value="remote">Télétravail</option>
+                    </select>
+                </div>
+
+                <div class="field"><label for="p-exp">Expérience</label>
+                    <select id="p-exp" name="experience">
+                        <option value="">Non précisé</option><option value="debutant">&lt; 1 an</option><option value="junior">1 à 3 ans</option>
+                        <option value="confirme">3 à 5 ans</option><option value="senior">&gt; 5 ans</option>
+                    </select>
+                </div>
+
+                <div class="field"><label for="p-edu">Niveau d'études</label>
+                    <select id="p-edu" name="education_level">
+                        <option value="">Non précisé</option><option value="bac">BAC / BAC Pro</option><option value="bac2">BAC+2</option>
+                        <option value="bac3">BAC+3</option><option value="bac5">BAC+5</option>
+                    </select>
+                </div>
+
+                <div class="field"><label for="p-start">Date de début (vide = dès que possible)</label><input id="p-start" name="start_time" type="date"></div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-ghost" data-close>Annuler</button>
+                <button type="submit" class="btn">Publier</button>
+            </div>
+            <div class="actions-row">
+                <button type="button" class="btn btn-ghost" id="offer-cancel">Annuler</button>
+                <button type="submit" class="btn">Enregistrer</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Supprimer une offre -->
+    <!-- <dialog id="dlg-del">
+        <h2>Supprimer cette offre ?</h2>
+        <p class="muted" id="del-text"></p>
+        <div class="actions-row">
+            <button class="btn btn-ghost" id="del-cancel">Garder</button>
+            <button class="btn btn-danger" id="del-ok">Supprimer l'offre</button>
+        </div>
+    </dialog> -->
+
+    <div id="toast" role="status" aria-live="polite"></div>
+
+
+    <footer class="site-footer">
+        <p>© 2026 Talentis. Tous droits réservés.</p>
+    </footer>
+
+    
+    <script src="js/api.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/espace-recruiter.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="icon" href="style/logo.png" type="image/x-icon">
+
+    <title>Offres d'emploi - Talentis</title>
+</head>
+
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <a class="jobboard" href="main.html"><img src="style/logo.png" class="header-logo" alt=""><span>Talentis</span></a>
+            <nav class="navbar">
+
+                <!--header avec différents data-role-->
+
+                <li><a class="btn-nav-outline" href="main.html">Offres</a></li>
+
+                <li data-role="visitor" hidden><a class="btn btn-sm" href="login.html">Se connecter</a></li>
+                <li data-role="visitor" hidden><a class="btn-nav-outline" href="account.html">S'inscrire</a></li>
+
+
+                <!--Menu déroulant pour candidat-->
+                <li class="menu" data-role="candidate" hidden>
+                    <details>
+                        <summary class="menu-toggle" aria-label="Menu du compte">
+                            <span class="avatar menu-initials"></span><span class="menu-name">Mon compte</span>
+                        </summary>
+                        <div class="menu-panel">
+                            <a class="menu-profile" href="profile.html">
+                                <span class="avatar menu-initials"></span>
+                                <span><strong class="menu-name">Mon compte</strong><small>Voir mon compte</small></span>
+                            </a>
+                            <hr>
+                            <a href="espace-candidate.html">Mon espace</a>
+                            <hr>
+                            <button type="button" data-logout>Déconnexion</button>
+                        </div>
+                    </details>
+                </li>
+                
+                <!--Menu déroulant pour recruteur-->
+
+                <li class="menu" data-role="recruiter" hidden>
+                    <details>
+                        <summary class="menu-toggle" aria-label="Menu du compte">
+                            <span class="avatar menu-initials"></span><span class="menu-name">Mon compte</span>
+                        </summary>
+
+                        <div class="menu-panel">
+                            <a class="menu-profile" href="account.html">
+                                <span class="avatar menu-initials"></span>
+                                <span><strong class="menu-name">Mon compte</strong><small>Voir mon compte</small></span>
+                            </a>
+                            <hr>
+                            <a href="espace-recruiter.html">Mon espace</a>
+                            <hr>
+                            <button type="button" data-logout>Déconnexion</button>
+                        </div>
+                    </details>
+                </li>
+            </nav>
+        </div>
+    </header>
+
+
+<!-- les noms ou ids à modifier en fonction de la base de donnée -->
+
+    <main class="container">
+        <section class="searchbar">
+            <h1>Chercher une offre</h1>
+            <form class="search" id="search-form" role="search">
+                <input type="search" name="search" placeholder="Métier, mot-clé" aria-label="Mot-clé">
+                <input type="text" name="city" placeholder="Ville" aria-label="Ville">
+                <select name="category" id="category" aria-label="Catégorie de métier">
+                    <option value="">Tous les categories</option>
+                    <option value="1">Informatique et numérique</option>
+                    <option value="2">Administration et gestion</option>
+                    <option value="3">Commerce et vente</option>
+                    <option value="4">Marketing et communication</option>
+                    <option value="5">Finance, banque et comptabilité</option>
+                    <option value="6">Ressources humaines</option>
+                    <option value="7">Santé et services sociaux</option>
+                    <option value="8">Éducation et formation</option>
+                    <option value="9">Industrie et production</option>
+                    <option value="10">Logistique et transport</option>
+                    <option value="11">Tourisme et hôtellerie</option>
+                    <option value="12">Agriculture</option>
+                    <option value="13">BTP et construction</option>
+                    <option value="14">Juridique et droit</option>
+                    <option value="15">Creation et design</option>
+                    <option value="16">Autres</option>
+                </select>
+                <button class="btn" type="submit">Rechercher</button>
+            </form>
+        </section>
+
+
+
+        <div class="adcontainer">
+
+            <!--============== Partie filtre ===============-->
+            <aside class="side">
+                <details class="card filters" id="filters" open>
+                    <summary>Filtres</summary>
+                    <form id="filters-form">
+                        <fieldset>
+                            <legend>Type de contrat</legend>
+                            <label class="check"><input type="checkbox" name="contract_type" value="CDI">CDI</label>
+                            <label class="check"><input type="checkbox" name="contract_type" value="CDD">CDD</label>
+                            <label class="check"><input type="checkbox" name="contract_type" value="Stage">Stage</label>
+                            <label class="check"><input type="checkbox" name="contract_type" value="Alternance">Alternance</label>
+                            <label class="check"><input type="checkbox" name="contract_type" value="Interim">Intérim</label>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Temps de travail</legend>
+                            <label class="check"><input type="radio" name="working_time" value="full_time">Temps plein</label>
+                            <label class="check"><input type="radio" name="working_time" value="part_time">Temps partiel</label>
+
+                        </fieldset>
+
+
+                        <fieldset>
+                            <legend>Niveau d'étude</legend>
+                            <label class="check"><input type="radio" name="education_level" value="bac">BAC / BAC Pro</label>
+                            <label class="check"><input type="radio" name="education_level" value="bac2">BAC+2</label>
+                            <label class="check"><input type="radio" name="education_level" value="bac3">BAC+3, Licence, Bachelor</label>
+                            <label class="check"><input type="radio" name="education_level" value="bac5">BAC+5, Master, Grande Ecole</label>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Expérience</legend>
+                            <label class="check"><input type="radio" name="experience" value="debutant"> < 1 an</label>
+                            <label class="check"><input type="radio" name="experience" value="junior">1 à 3 ans</label>
+                            <label class="check"><input type="radio" name="experience" value="confirme"> 3 à 5 ans</label>
+                            <label class="check"><input type="radio" name="experience" value="senior"> > 5 ans </label>
+                        </fieldset>
+
+
+                        <!-- <fieldset>
+                            <legend>Date de début</legend>
+                            <label class="check"><input type="checkbox" name="start_time" value="ASAP">Dès que possible</label>
+                            <label class="check"><input type="checkbox" name="start_time" value="3months">Dans moins de 3 mois</label>
+                            <label class="check"><input type="checkbox" name="start_time" value="moremonths">Dans plus de 3 mois</label>
+                        </fieldset> -->
+
+                        <fieldset>
+                            <legend>Mode de travail</legend>
+                            <label class="check"><input type="checkbox" name="work_mode" value="remote">Télétravail</label>
+                            <label class="check"><input type="checkbox" name="work_mode" value="hybrid">Hybride</label>
+                            <label class="check"><input type="checkbox" name="work_mode" value="onsite">Sur site</label>
+                        </fieldset>
+                    </form>
+                    <button type="button" class="btn btn-ghost btn-sm" id="reset-filter">Réinitialiser</button>
+                </details>
+            </aside>
+
+
+            <!--=========== Partie annonces ==========-->
+            <div>
+                <div class="results-header">
+                    <h2>Offres</h2>
+                    <button type="button" class="btn" id="open-publish" data-role="recruiter" hidden>Publier une offre</button>
+                </div>
+                <div class="ad-list"></div>
+
+                <!-- Template à répéter pour chaque ad dans la db -->
+
+                <template id="template-ad">
+                    <article class="ad ad-row" data-id="1">
+                        <div class="ad-content">
+                            <h3 class="ad-title">Ad title 1<span class="ad-new">Nouveau</span></h3>
+                            <p class="ad-meta">company_name · city (postal_code)</p>
+                            <p class="ad-desc">short_description</p>
+                            <ul class="ad-tags"><li class="is-contract">contract_type</li><li>working_time</li><li>work_mode</li><li>experience</li></ul>
+                        </div>
+
+                        
+                        <!-- FAVORI OFFRES
+
+                        <button type="button" class="save-btn" aria-pressed="false" aria-label="Enregistrer l'offre"></button>
+                        -->
+
+
+                        <div class="ad-side">
+                            
+                            <p class="ad-salary"></p>
+                            <time class="ad-date" name="created_at" datetime="2026-10-10T08:00">il y a 2 heures</time>
+                        </div>
+
+                        <div class="ad-actions">
+                            <button type="button" class="btn btn-ghost btn-sm" data-more aria-expanded="false">En savoir plus</button>
+                            <button data-role="candidate" type="button" class="btn btn-sm" data-apply aria-expanded="false" hidden>Postuler</button>
+                        </div>
+                    </article>
+                </template>
+
+                <div class="pagination">
+                    <button type="button" id="main-previous" class="btn btn-ghost btn-sm" disabled>Précédent</button>
+                    <span id="main-page-info">Page 1 sur 1</span>
+                    <button type="button" id="main-next" class="btn btn-ghost btn-sm" disabled>Suivant</button>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!--formulaire pour publier une annonce, réservé aux recruteurs-->
+
+        <dialog id="publish-dialog" class="modal" aria-labelledby="publish-title">
+            <form id="publish-form" class="modal-body">
+                <div class="modal-head">
+                    <h2 id="publish-title">Publier une offre</h2>
+                    <button type="button" class="modal-close" data-close aria-label="Fermer">&times;</button>
+                </div>
+
+                <div class="alert" id="publish-error" role="alert" hidden></div>
+
+                <div class="ad-fields">
+                    <div class="field wide"><label for="p-title">Titre du poste</label><input id="p-title" name="title" maxlength="150" required></div>
+                    
+                    <div class="field wide"><label for="p-short">Description courte</label><input id="p-short" name="short_description" maxlength="255" required></div>
+                    
+                    <div class="field wide"><label for="p-full">Description complète</label><textarea id="p-full" name="full_description" rows="6" required></textarea></div>
+
+                    <div class="field"><label for="p-city">Ville</label><input id="p-city" name="city"></div>
+                    
+                    <div class="field"><label for="p-postal">Code postal</label><input id="p-postal" name="postal_code" inputmode="numeric" maxlength="10"></div>
+
+                    <div class="field"><label for="p-contract">Type de contrat</label>
+                        <select id="p-contract" name="contract_type" required>
+                            <option value="CDI">CDI</option><option value="CDD">CDD</option><option value="Stage">Stage</option>
+                            <option value="Alternance">Alternance</option><option value="Interim">Intérim</option>
+                        </select>
+                    </div>
+
+                    <div class="field"><label for="p-category">Catégorie</label><select id="p-category" name="category" required></select></div>
+
+                    <div class="field"><label for="p-min">Salaire mensuel minimum (€)</label><input id="p-min" name="monthly_salary_min" type="number" min="0"></div>
+
+                    <div class="field"><label for="p-max">Salaire mensuel maximum (€)</label><input id="p-max" name="monthly_salary_max" type="number" min="0"></div>
+
+                    <div class="field"><label for="p-time">Temps de travail</label>
+                        <select id="p-time" name="working_time">
+                            <option value="">Non précisé</option><option value="full_time">Temps plein</option><option value="part_time">Temps partiel</option>
+                        </select>
+                    </div>
+
+                    <div class="field"><label for="p-mode">Mode de travail</label>
+                        <select id="p-mode" name="work_mode">
+                            <option value="onsite">Sur site</option><option value="hybrid">Hybride</option><option value="remote">Télétravail</option>
+                        </select>
+                    </div>
+
+                    <div class="field"><label for="p-exp">Expérience</label>
+                        <select id="p-exp" name="experience">
+                            <option value="">Non précisé</option><option value="debutant">&lt; 1 an</option><option value="junior">1 à 3 ans</option>
+                            <option value="confirme">3 à 5 ans</option><option value="senior">&gt; 5 ans</option>
+                        </select>
+                    </div>
+
+                    <div class="field"><label for="p-edu">Niveau d'études</label>
+                        <select id="p-edu" name="education_level">
+                            <option value="">Non précisé</option><option value="bac">BAC / BAC Pro</option><option value="bac2">BAC+2</option>
+                            <option value="bac3">BAC+3</option><option value="bac5">BAC+5</option>
+                        </select>
+                    </div>
+
+                    <div class="field"><label for="p-start">Date de début (vide = dès que possible)</label><input id="p-start" name="start_time" type="date"></div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-ghost" data-close>Annuler</button>
+                    <button type="submit" class="btn">Publier</button>
+                </div>
+            </form>
+        </dialog>
+
+
+        
+
+    </main>
+
+
+
+    <!-- Panneau "En savoir plus" -->
+    <template id="template-detail">
+        <section class="ad-detail">
+            <h3>Détail du poste</h3>
+
+            <dl>
+                <dt>Catégorie</dt><dd data-field="category_name"></dd>
+                <dt>Entreprise</dt><dd data-field="company_name"></dd>
+                <dt>Lieu</dt><dd data-field="location"></dd>
+                <dt>Salaire</dt><dd data-field="salary"><span>€ par mois</span></dd>
+                <dt>Contrat</dt><dd data-field="contract_type"></dd>
+                <dt>Temps de travail</dt><dd data-field="working_time"></dd>
+                <dt>Mode de travail</dt><dd data-field="work_mode"></dd>
+                <dt>Expérience</dt><dd data-field="experience"></dd>
+                <dt>Niveau d'études</dt><dd data-field="education_level"></dd>
+                <dt>Date de début</dt><dd data-field="start_time"></dd>
+                <dt>Description:</dt><p class="ad-full" data-field="description"></p>
+            </dl>
+
+            
+        </section>
+    </template>
+
+    <!-- Formulaire "Postuler" -->
+    <template id="template-apply">
+        <form class="ad-apply" enctype="multipart/form-data">
+            <h3>Postuler à cette annonce</h3>
+            <div class="field">
+                <label class="cv">CV
+                    <select class="cv-load" name="cv_choice">
+                        <option value="saved" disabled>CV enregistré (chargement…)</option>
+                        <option value="new">Ajouter un nouveau CV</option>
+                        <option value="none" selected>Continuer sans CV</option>
+                    </select>
+                </label>
+                <label class="cv-upload" hidden>Nouveau CV (PDF, 5 Mo maximum)
+                    <input class="newcv" type="file" name="cv" accept=".pdf,application/pdf" disabled>
+                </label>
+
+            </div>
+            <div class="ad-fields">
+                <div class="field"><label>Prénom*</label><input name="first_name" autocomplete="given-name" required></div>
+                <div class="field"><label>Nom*</label><input name="last_name" autocomplete="family-name" required></div>
+                <div class="field"><label>Adresse mail*</label><input name="email" type="email" autocomplete="email" required></div>
+                <div class="field"><label>Téléphone</label><input name="telephone" type="tel" autocomplete="tel"></div>
+                <div class="field wide"><label>Message au recruteur</label><textarea name="message" required></textarea></div>
+            </div>
+            <div class="ad-actions">
+                <button type="submit" class="btn btn-sm">Envoyer ma candidature</button>
+                <button type="button" class="btn btn-ghost btn-sm" data-cancel>Annuler</button>
+            </div>
+        </form>
+    </template>
+
+    <footer class="site-footer">
+        <p>© 2026 Talentis. Tous droits réservés.</p>
+    </footer>
+
+    <script src="js/cookies.js"></script>
+    <script src="js/api.js"></script>
+
+    <script src="js/menu.js"></script>
+
+    <script src="js/ads.js"></script>
+
+    <script src="js/main.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="icon" href="style/logo.png" type="image/x-icon">
+    
+    <title>Inscription - Talentis</title>
+</head>
+<body class="register-page">
+    
+    <header class="site-header">
+        <div class="container">
+            <a class="jobboard" href="main.html"><img src="style/logo.png" class="header-logo" alt=""><span>Talentis</span></a>
+            <nav class="navbar">
+
+                <!--header avec différents data-role-->
+
+                <li><a class="btn-nav-outline" href="main.html">Offres</a></li>
+
+                <li data-role="visitor" hidden><a class="btn btn-sm" href="login.html">Se connecter</a></li>
+                <li data-role="visitor" hidden><a class="btn-nav-outline" href="account.html">S'inscrire</a></li>
+
+
+                <!--Menu déroulant pour candidat-->
+                <li class="menu" data-role="candidate" hidden>
+                    <details>
+                        <summary class="menu-toggle" aria-label="Menu du compte">
+                            <span class="avatar menu-initials"></span><span class="menu-name">Mon compte</span>
+                        </summary>
+                        <div class="menu-panel">
+                            <a class="menu-profile" href="profile.html">
+                                <span class="avatar menu-initials"></span>
+                                <span><strong class="menu-name">Mon compte</strong><small>Voir mon compte</small></span>
+                            </a>
+                            <hr>
+                            <a href="espace-candidate.html">Mon espace</a>
+                            <hr>
+                            <button type="button" data-logout>Déconnexion</button>
+                        </div>
+                    </details>
+                </li>
+                
+                <!--Menu déroulant pour recruteur-->
+
+                <li class="menu" data-role="recruiter" hidden>
+                    <details>
+                        <summary class="menu-toggle" aria-label="Menu du compte">
+                            <span class="avatar menu-initials"></span><span class="menu-name">Mon compte</span>
+                        </summary>
+
+                        <div class="menu-panel">
+                            <a class="menu-profile" href="account.html">
+                                <span class="avatar menu-initials"></span>
+                                <span><strong class="menu-name">Mon compte</strong><small>Voir mon compte</small></span>
+                            </a>
+                            <hr>
+                            <a href="espace-recruiter.html">Mon espace</a>
+                            <hr>
+                            <button type="button" data-logout>Déconnexion</button>
+                        </div>
+                    </details>
+                </li>
+            </nav>
+        </div>
+    </header>
+
+
+
+    <main>
+        <section class="accountcontainer">
+            <h1>Créer un compte</h1>
+
+            <!-- choisir son role -->
+            <fieldset class="role-choice" id="role-field">
+                <legend>Je suis</legend>
+
+                <!--par défaut on est candidat-->
+                <label class="role-card">
+                    <input type="radio" name="role" value="candidate" checked>
+                    <span class="role-box"><strong>Candidat</strong></span>
+                </label>
+
+                <label class="role-card">
+                    <input type="radio" name="role" value="recruiter">
+                    <span class="role-box"><strong>Recruteur</strong></span>
+                </label>
+            </fieldset>
+
+
+            <form class="accountform" id="account-form" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="field"><label for="email">Adresse mail*</label>
+                        <input id="email" name="email" type="email" required></div>
+
+                    <div class="field has-notice"><label for="password">Mot de passe*</label>
+                        <input id="password" name="password" type="password" autocomplete="new-password" required minlength="12">
+                        <p class="notice2">Votre mot de passe doit contenir au moins 12 caractères, et être composé de lettres et chiffres.</p></div>
+            
+                
+                    <div class="field"><label for="first_name">Prénom*</label>
+                        <input id="first_name" name="first_name" required></div>
+
+                    <div class="field"><label for="last_name">Nom*</label>
+                        <input id="last_name" name="last_name" required></div>
+
+                    <div class="field">
+                            <label for="telephone">Téléphone</label>
+                            <input id="telephone" name="telephone" type="tel"></div>
+                </div>
+                <!--formulaire d'inscription candidat (par défaut)-->
+
+                <fieldset id="fs-candidate" style="border:0;padding:0;margin:0">
+                    <div class="form-row">
+
+                        <div class="field">
+                            <label for="postal_code">Code postal*</label>
+                            <input id="postal_code" name="postal_code" required></div>
+                        
+                        <div class="field">
+                            <label for="city">Ville*</label>
+                            <input id="city" name="city" required></div>
+                        
+                    </div>
+                        
+                    <div class="field">
+                        <label for="cv">CV (PDF, 5 Mo maximum)</label>
+                        <input id="cv" name="cv" type="file" accept="application/pdf">
+                    </div>
+                </fieldset>
+
+
+                <!--formulaire d'inscription entreprise (caché)-->
+
+                <fieldset id="fs-recruiter" style="border:0;padding:0;margin:0" hidden disabled>
+                    <div class="form-row">
+                        <div class="field">
+                            <label for="company_name">Nom de l'entreprise*</label>
+                            <input id="company_name" name="company_name" required></div>
+                        
+                        <div class="field">
+                            <label for="siret">Numéro SIRET*</label>
+                            <input id="siret" name="siret" inputmode="numeric" pattern="[0-9]{14}" minlength="14" maxlength="14" required></div>
+
+                        <div class="field">
+                            <label for="company_postal_code">Code postal*</label>
+                            <input id="company_postal_code" name="company_postal_code" required></div>
+
+                        <div class="field">
+                            <label for="company_city">Ville*</label>
+                            <input id="company_city" name="company_city" required></div>
+
+                        <div class="field">
+                            <label for="description">Description, activité</label>
+                            <input id="description" name="description"></div>
+
+                        
+                        <div class="field">
+                            <label for="website">Site web</label>
+                            <input id="website" name="website" type="url"></div>
+
+                    </div>
+
+                </fieldset>
+                
+                <div style="display:flex;gap:.5rem;justify-content:space-between;flex-wrap:wrap">
+                    <p id="form-error" style="color:#c0392b" role="alert"></p>
+                    <p id="form-success" style="color:#27ae60" role="status"></p>
+                    <button class="btn" type="submit" id="submit-btn">Créer mon compte</button>
+                </div>
+
+            </form>
+
+
+
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <p>© 2026 Talentis. Tous droits réservés.</p>
+    </footer>
+
+
+    <script src="js/api.js"></script>
+    <script src="js/menu.js"></script>
+    <script>
+        initPage();
+        const form = document.getElementById("account-form");
+        const fsCandidate = document.getElementById("fs-candidate");
+        const fsRecruiter = document.getElementById("fs-recruiter");
+        const errorBox = document.getElementById("form-error");
+        const successBox = document.getElementById("form-success");
+        const submitBtn = document.getElementById("submit-btn");
+        
+        function currentRole() {
+            return document.querySelector('input[name="role"]:checked').value;
+        }
+
+        function updateRole() {
+            const isCandidate = currentRole() === "candidate";
+            fsCandidate.hidden = !isCandidate;
+            fsCandidate.disabled = !isCandidate;
+            fsRecruiter.hidden = isCandidate;
+            fsRecruiter.disabled = isCandidate
+        }
+
+        document.querySelectorAll('input[name="role"]').forEach(r => r.addEventListener("change", updateRole));
+        updateRole();
+
+        form.addEventListener("submit", async(event) => {
+            event.preventDefault();
+            errorBox.textContent = "";
+            successBox.textContent = "";
+
+            const formData = new FormData(form);
+            formData.append("role", currentRole());
+
+            try {
+                const data = await api("/auth/register", {
+                    method: "POST",
+                    body: formData,
+                    redirectOn401: false,
+                });
+                localStorage.setItem("token", data.token);
+                successBox.textContent = "Votre compte est créé avec succès !";
+                submitBtn.disabled = true;
+                setTimeout(() => { location.href = "main.html"; }, 2000);
+                
+            } catch (err) {
+                if (err.status) {
+                    const messages = Object.entries(err.data || {}).map(
+                        ([champ, msg]) => `${champ} : ${Array.isArray(msg) ? msg.join(" ") : msg}`
+                    );
+                    errorBox.textContent = messages.join(" | ") || "Nous rencontrons une erreur lors de l'inscription.";
+                } else {
+                    errorBox.textContent = "Impossible de joindre le serveur.";
+                }
+            }
+            
+        });
+
+    </script>
+
+
+</body>
+</html>
